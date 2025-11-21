@@ -5,31 +5,31 @@ require 'db.php';
 $id = $_GET['id'];
 
 // Get book by ID
-$sql = "SELECT * FROM book WHERE book_id = $id";
+$sql = "SELECT * FROM author WHERE author_id = $id";
 $result = mysqli_query($conn, $sql);
 $bk = mysqli_fetch_assoc($result);
 
 // Update process
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $t = $_POST['title'];
-    $c = $_POST['category'];
-    $ty = $_POST['book_type'];
-    $p = $_POST['original_price'];
+    $t = $_POST['first_name'];
+    $c = $_POST['last_name'];
+    $ty = $_POST['country'];
+    $p = $_POST['bio'];
 
     $sql = "
-        UPDATE book 
+        UPDATE author 
         SET 
-            title = '$t',
-            category = '$c',
-            book_type = '$ty',
-            original_price = '$p'
-        WHERE book_id = $id
+            first_name = '$t',
+            last_name = '$c',
+            country = '$ty',
+            bio = '$p'
+        WHERE author_id = $id
     ";
 
     mysqli_query($conn, $sql);
 
-    header("Location: books.php");
+    header("Location: authors.php");
     exit;
 }
 ?>
@@ -112,24 +112,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="content">
     <div class="edit-container">
-        <h3>Edit Book</h3>
+        <h3>Edit Author</h3>
 
-        <form method="post">
-            <label>Title</label>
-            <input name="title" value="<?php echo $bk['title']; ?>">
+        <form method="POST">
+            <label for="fn">First name</label><br>
+            <input type="text" name="first_name" id="fn" value="<?php echo$bk['first_name']?>">
+        
+            <label for="ls">Last name</label><br>
+            <input type="text" name="last_name" id="ls" value="<?php echo $bk['last_name']?>">
+        
+            <label for="cn">Country</label><br>
+            <input type="text" name="country" id="cn" value="<?php echo$bk['country']?>">
+     
+            <label for="b">Bio</label><br>
+            <input type="text" name="bio" id="b" value="<?php echo$bk['bio']?>">
+       
+        <button type="submit">Save</button>
+    </form>
 
-            <label>Category</label>
-            <input name="category" value="<?php echo $bk['category']; ?>">
 
-            <label>Type</label>
-            <input name="book_type" value="<?php echo $bk['book_type']; ?>">
-
-            <label>Price</label>
-            <input name="original_price" value="<?php echo $bk['original_price']; ?>">
-
-            <button type="submit">Save</button>
-        </form>
-
-        <a href="books.php" class="back-btn">Back to Books</a>
+        <a href="authors.php" class="back-btn">Back to Authors</a>
     </div>
 </div>
+
+      

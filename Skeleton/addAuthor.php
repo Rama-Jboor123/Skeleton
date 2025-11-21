@@ -2,34 +2,16 @@
 include 'header.php';
 require 'db.php';
 
-$id = $_GET['id'];
+if($_SERVER['REQUEST_METHOD']=='POST'){
+$t = $_POST['first_name'];
+    $c = $_POST['last_name'];
+    $ty = $_POST['country'];
+    $p = $_POST['bio'];
 
-// Get book by ID
-$sql = "SELECT * FROM book WHERE book_id = $id";
-$result = mysqli_query($conn, $sql);
-$bk = mysqli_fetch_assoc($result);
-
-// Update process
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $t = $_POST['title'];
-    $c = $_POST['category'];
-    $ty = $_POST['book_type'];
-    $p = $_POST['original_price'];
-
-    $sql = "
-        UPDATE book 
-        SET 
-            title = '$t',
-            category = '$c',
-            book_type = '$ty',
-            original_price = '$p'
-        WHERE book_id = $id
-    ";
-
+    $sql="insert into author (first_name,last_name,country,bio) value ('$t','$c','$ty','$p')";
     mysqli_query($conn, $sql);
 
-    header("Location: books.php");
+    header("Location: authors.php");
     exit;
 }
 ?>
@@ -49,18 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         width: calc(100% - 250px);
     }
 
-    .edit-container {
+    .add-container {
         width: 450px;
-        margin:70px ;
+        margin: 70px ;
         background: rgba(255, 255, 255, 0.6);
         padding: 25px;
         border-radius: 12px;
         box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
     }
 
-    h3 {
+    h2 {
         text-align: center;
         color: #391B25;
+        margin-bottom: 20px;
     }
 
     label {
@@ -111,25 +94,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </style>
 
 <div class="content">
-    <div class="edit-container">
-        <h3>Edit Book</h3>
 
-        <form method="post">
-            <label>Title</label>
-            <input name="title" value="<?php echo $bk['title']; ?>">
+    <div class="add-container">
+        <h2>Add New Book</h2>
 
-            <label>Category</label>
-            <input name="category" value="<?php echo $bk['category']; ?>">
+<form method="POST">
+        
+            
 
-            <label>Type</label>
-            <input name="book_type" value="<?php echo $bk['book_type']; ?>">
+    
+            <label for="fn">First name</label><br>
+            <input type="text" name="first_name" id="fn">
+      
 
-            <label>Price</label>
-            <input name="original_price" value="<?php echo $bk['original_price']; ?>">
+        
+            <label for="ls">Last name</label><br>
+            <input type="text" name="last_name" id="ls">
+        
 
-            <button type="submit">Save</button>
-        </form>
+       
+            <label for="cn">Country</label><br>
+            <input type="text" name="country" id="cn">
+     
 
-        <a href="books.php" class="back-btn">Back to Books</a>
+        
+        
+            <label for="b">Bio</label><br>
+            <input type="text" name="bio" id="b">
+       
+
+        <button type="submit">Save</button>
+    </form>
+
+
+        <a href="authors.php" class="back-btn">Back to Authors</a>
     </div>
 </div>

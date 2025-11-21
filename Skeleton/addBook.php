@@ -2,31 +2,13 @@
 include 'header.php';
 require 'db.php';
 
-$id = $_GET['id'];
-
-// Get book by ID
-$sql = "SELECT * FROM book WHERE book_id = $id";
-$result = mysqli_query($conn, $sql);
-$bk = mysqli_fetch_assoc($result);
-
-// Update process
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $t = $_POST['title'];
+if($_SERVER['REQUEST_METHOD']=='POST'){
+$t = $_POST['title'];
     $c = $_POST['category'];
     $ty = $_POST['book_type'];
     $p = $_POST['original_price'];
 
-    $sql = "
-        UPDATE book 
-        SET 
-            title = '$t',
-            category = '$c',
-            book_type = '$ty',
-            original_price = '$p'
-        WHERE book_id = $id
-    ";
-
+    $sql="insert into book (title,category,book_type,original_price) value ('$t','$c','$ty','$p')";
     mysqli_query($conn, $sql);
 
     header("Location: books.php");
@@ -49,18 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         width: calc(100% - 250px);
     }
 
-    .edit-container {
+    .add-container {
         width: 450px;
-        margin:70px ;
+        margin: 70px ;
         background: rgba(255, 255, 255, 0.6);
         padding: 25px;
         border-radius: 12px;
         box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
     }
 
-    h3 {
+    h2 {
         text-align: center;
         color: #391B25;
+        margin-bottom: 20px;
     }
 
     label {
@@ -111,21 +94,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </style>
 
 <div class="content">
-    <div class="edit-container">
-        <h3>Edit Book</h3>
 
-        <form method="post">
-            <label>Title</label>
-            <input name="title" value="<?php echo $bk['title']; ?>">
+    <div class="add-container">
+        <h2>Add New Book</h2>
 
-            <label>Category</label>
-            <input name="category" value="<?php echo $bk['category']; ?>">
+<form method="post">
+            <label for="t">Title</label>
+            <input name="title" id="t">
 
-            <label>Type</label>
-            <input name="book_type" value="<?php echo $bk['book_type']; ?>">
+            <label for="c">Category</label>
+            <input name="category" id="c">
 
-            <label>Price</label>
-            <input name="original_price" value="<?php echo $bk['original_price']; ?>">
+            <label for="ty">Type</label>
+            <input name="book_type" id="ty">
+
+            <label for="p">Price</label>
+            <input name="original_price" id="p">
 
             <button type="submit">Save</button>
         </form>

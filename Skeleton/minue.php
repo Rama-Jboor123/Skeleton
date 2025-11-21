@@ -19,7 +19,7 @@
             width: 250px;
             height: 100vh;
             margin-top:66px;
-            background-color: #4A2C2A;
+            background-color: 391B25;
             position: fixed;
             left: 0;
             top: 0;
@@ -39,7 +39,7 @@
         }
 
         nav ul li:hover {
-            background-color: #7a3d2e;
+            background-color: #4A2C2A;
             cursor: pointer;
         }
 
