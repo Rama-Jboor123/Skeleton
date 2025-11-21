@@ -12,115 +12,7 @@ require 'db.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            background-color: #FEF7E4;
-        }
-
-       
-        .content {
-            margin-left: 250px; 
-            padding: 20px;
-            width: calc(100% - 250px);
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-       
-        form {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        form input, form select {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid gray;
-        }
-
-        form label {
-            font-weight: bold;
-            color: #333;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #FEF7E4;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        table th {
-            background: #391B25;
-            color: white;
-            padding: 10px;
-        }
-
-        table td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table tr:hover {
-            background: #c4bbbbff;
-        }
-
-        a {
-            text-decoration: none;
-            color: #4A2C2A;
-            font-weight: bold;
-        }
-        .btn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    color: white;
-    transition: 0.2s;
-}
-
-
-.btn-edit {
-    background-color: #2d7d2d; 
-}
-
-.btn-edit:hover {
-    background-color: #1e571e;
-}
-
-
-.btn-delete {
-    background-color: #b32121; 
-}
-
-.btn-delete:hover {
-    background-color: #7a1616;
-}
-
-.btn-add{
-   background-color:#391B25;
-    margin-bottom: 40px;
-}
-
-.btn-add:hover{
-   background-color:#391B40;
-}
-
-
-    </style>
+    <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
@@ -197,7 +89,7 @@ require 'db.php';
 
         <div>
             <label for="price">Price</label><br>
-            <input type="text" name="price" id="price">
+            <input type="number" name="price" id="price">
         </div>
 
         <div style="align-self: end;">
