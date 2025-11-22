@@ -16,7 +16,7 @@
         /* Sidebar */
         nav {
             display:inline-block;
-            width: 250px;
+            width: 180px;
             height: 100vh;
             margin-top:66px;
             background-color: 391B25;
