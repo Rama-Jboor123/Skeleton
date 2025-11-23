@@ -33,7 +33,7 @@ require 'db.php';
             $sql .= " AND loan_id = '$id'";
         }
 
-        if (!empty($_POST['first-name'])) {
+        if (!empty($_POST['first_name'])) {
             $fn = $_POST['first_name'];
             $sql .= " AND first_name LIKE '%$fn%'";
         }
