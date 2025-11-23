@@ -1,10 +1,14 @@
 <?php
-//include 'header.php';
-//include 'minue.php';
+include 'header.php';
+include 'minue.php';
 require 'db.php';
 ?>
 
+ <link rel="stylesheet" href="style.css">
 
+
+
+<div class="content">
 <h2>Reports</h2>
 
 <form method="POST">
@@ -533,3 +537,4 @@ echo "
 
 
 ?>
+</div>

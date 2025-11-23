@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['role'] = $user['role'];
 
             // 7. Redirect to books page
-            header("Location: books.php");
+            header("Location: dashboard.php");
             exit;
         }
         else{
