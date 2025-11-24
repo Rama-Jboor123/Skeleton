@@ -97,8 +97,9 @@ require 'db.php';
             <input type="reset" value="Refresh">
         </div>
     </form>
-
+    <?php if ($_SESSION['role'] == 'admin'): ?>
      <a href="addBook.php" ><button class="btn btn-add">Add Book</button></a>
+     <?php endif ?>
 
     <!-- Books Table -->
     <table border="1">
@@ -108,7 +109,9 @@ require 'db.php';
             <th>Category</th>
             <th>Type</th>
             <th>Price</th>
+            <?php if ($_SESSION['role'] == 'admin'): ?>
             <th>Actions</th>
+            <?php endif ?>
         </tr>
 
         <?php while ($row = mysqli_fetch_assoc($r)) { ?>
@@ -118,11 +121,13 @@ require 'db.php';
                 <td><?php echo $row['category']; ?></td>
                 <td><?php echo $row['book_type']; ?></td>
                 <td><?php echo $row['original_price']; ?></td>
+                <?php if ($_SESSION['role'] == 'admin'): ?>
                 <td>
                     <a href="edit_book.php?id=<?php echo $row['book_id']; ?>"><button class="btn btn-edit">Edit</button></a> |
                     <a onclick="return confirm('Are you sure?');"
                        href="delete_book.php?id=<?php echo $row['book_id']; ?>"><button class="btn btn-delete">Delet</button></a>
                 </td>
+                <?php endif ?>
             </tr>
         <?php } ?>
     </table>

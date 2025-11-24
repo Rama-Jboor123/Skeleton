@@ -1,12 +1,25 @@
-<!-- <?php
+<?php
 include 'header.php';
 include 'minue.php';
 require 'db.php';
 ?>
-
-<link rel="stylesheet" href="style.css">
-
-<style>article {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aboat me</title> 
+</head>
+<body>
+<style>
+  body {
+  font-family: "Poppins", Arial, sans-serif;
+  background-color: #FEF7E4;
+  color: white;
+  overflow-x: hidden;
+}
+article {
+  margin:auto;
   padding: 60px 10%;
   display: flex;
   flex-direction: column;
@@ -28,7 +41,7 @@ require 'db.php';
 
 .aboutMe h1 {
   font-size: 36px;
-  color: rgb(95, 5, 95);
+  color: #391B25;
   margin-bottom: 15px;
 }
 
@@ -41,7 +54,7 @@ require 'db.php';
   position: relative;
   display: inline-block;
   color: transparent;
-  -webkit-text-stroke: 0.7px rgb(95, 5, 95);
+  -webkit-text-stroke: 0.7px #391B25;
   animation: display-text 16s linear infinite;
   animation-delay: calc(-3s * var(--i));
 }
@@ -50,12 +63,34 @@ require 'db.php';
   content: attr(date-text);
   position: absolute;
   width: 0%;
-  border-right: 2px solid rgb(95, 5, 95);
-  color: rgb(95, 5, 95);
+  border-right: 2px solid #391B25;
+  color: #391B25;
   white-space: nowrap;
   overflow: hidden;
   animation: fill-text 4s linear infinite;
-}</style>
+}
+@keyframes fill-text {
+  10%, 100% { width: 0; }
+  70%, 90% { width: 100%; }
+}
+
+@keyframes display-text {
+  25%, 100% { display: none; }
+}
+
+#ff {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 40px;
+}
+
+
+
+
+</style>
 
 <article>
         <div class="aboutMe" id="about">
@@ -76,4 +111,6 @@ require 'db.php';
             </ul>
         
     </div>
-</article> -->
+</article> 
+</body>
+</html>

@@ -90,9 +90,9 @@ require 'db.php';
             <input type="reset" value="Refresh">
         </div>
     </form>
-
+    <?php if ($_SESSION['role'] == 'admin'): ?>
      <a href="addPublisher.php" ><button class="btn btn-add">Add publisher</button></a>
-
+    <?php endif ?>
     <!-- Publishers Table -->
     <table border="1">
         <tr>
@@ -101,7 +101,9 @@ require 'db.php';
             <th>City</th>
             <th>Country</th>
             <th>Contact_info</th>
+            <?php if ($_SESSION['role'] == 'admin'): ?>
             <th>Actions</th>
+            <?php endif?>
         </tr>
 
         <?php while ($row = mysqli_fetch_assoc($r)) { ?>

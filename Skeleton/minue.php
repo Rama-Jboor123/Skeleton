@@ -68,10 +68,12 @@
             <li><a href="books.php"> Books</a></li>
             <li><a href="authors.php"> Authors</a></li>
             <li><a href="publishers.php"> Publishers</a></li>
+            <?php if ($_SESSION['role'] == 'admin'): ?>
             <li><a href="borrowers.php"> Borrowers</a></li>
             <li><a href="loans.php"> Loans</a></li>
             <li><a href="sales.php"> Sales</a></li>
             <li><a href="reports.php"> Reports</a></li>
+            <?php endif; ?>
             <li><a href="aboutme.php"> About Developer</a></li>
         </ul>
     </nav>
