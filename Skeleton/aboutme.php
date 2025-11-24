@@ -87,6 +87,22 @@ article {
   gap: 40px;
 }
 
+#pp {
+  max-width: 400px;
+  text-align: left;
+}
+
+#pp p {
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+#pp ul {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  list-style-type: none;
+}
 
 
 
@@ -102,7 +118,7 @@ article {
         </h2>
         <div id="ff">
         <div id="pp">
-        <p>Hi! I’m a Software Engineering student who believes coffee and Mozart can fix almost any bug.I enjoy building projects, learning new tech, and pretending I fully understand why my code suddenly works after adding one print statement</p>
+        <p style="color: #391B25;">Hi! I’m a Software Engineering student who believes coffee and Mozart can fix almost any bug.I enjoy building projects, learning new tech, and pretending I fully understand why my code suddenly works after adding one print statement</p>
         
             <ul id="contact">
                 <li><a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"><img src="https://cdn2.iconfinder.com/data/icons/address-book-providers-in-colors/512/gmail-2-512.png" alt="" width="45px" height="45px"></a></li>

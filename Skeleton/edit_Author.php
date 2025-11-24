@@ -2,36 +2,61 @@
 include 'header.php';
 require 'db.php';
 
-$id = $_GET['id'];
+$errors = [];
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Get book by ID
-$sql = "SELECT * FROM author WHERE author_id = $id";
-$result = mysqli_query($conn, $sql);
+if ($id <= 0) {
+    die("<h2 style='color:red;margin:50px;'>Invalid Author ID.</h2>");
+}
+
+// Fetch existing author
+$sql = "SELECT * FROM author WHERE author_id = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 $bk = mysqli_fetch_assoc($result);
 
-// Update process
+if (!$bk) {
+    die("<h2 style='color:red;margin:50px;'>Author not found.</h2>");
+}
+
+// Prepare values (initial values or after POST)
+$fname = $bk['first_name'];
+$lname = $bk['last_name'];
+$country = $bk['country'];
+$bio = $bk['bio'];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $t = $_POST['first_name'];
-    $c = $_POST['last_name'];
-    $ty = $_POST['country'];
-    $p = $_POST['bio'];
+    // Get & sanitize inputs
+    $fname = trim($_POST['first_name']);
+    $lname = trim($_POST['last_name']);
+    $country = trim($_POST['country']);
+    $bio = trim($_POST['bio']);
 
-    $sql = "
-        UPDATE author 
-        SET 
-            first_name = '$t',
-            last_name = '$c',
-            country = '$ty',
-            bio = '$p'
-        WHERE author_id = $id
-    ";
+    // Validation
+    if (empty($fname)) $errors[] = "First name is required.";
+    if (empty($lname)) $errors[] = "Last name is required.";
+    if (empty($country)) $errors[] = "Country is required.";
+    if (empty($bio)) $errors[] = "Bio is required.";
 
-    mysqli_query($conn, $sql);
+    // Update if no errors
+    if (empty($errors)) {
 
-    header("Location: authors.php");
-    exit;
+        $sql = "UPDATE author 
+                SET first_name = ?, last_name = ?, country = ?, bio = ?
+                WHERE author_id = ?";
+
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssi", $fname, $lname, $country, $bio, $id);
+        mysqli_stmt_execute($stmt);
+
+        header("Location: authors.php");
+        exit;
+    }
 }
+
 ?>
 
 <style>
@@ -108,31 +133,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     .back-btn:hover {
         background-color: #7a1616;
     }
+
+    .error-box {
+        background: #ffe6e6;
+        padding: 10px;
+        border-left: 4px solid #b30000;
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="content">
     <div class="edit-container">
         <h3>Edit Author</h3>
 
+        <?php if (!empty($errors)): ?>
+            <div class="error-box">
+                <strong>Please fix the following errors:</strong>
+                <ul>
+                    <?php foreach ($errors as $err): ?>
+                        <li><?php echo $err; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
         <form method="POST">
             <label for="fn">First name</label><br>
-            <input type="text" name="first_name" id="fn" value="<?php echo$bk['first_name']?>">
+            <input type="text" name="first_name" id="fn" value="<?php echo htmlspecialchars($fname); ?>">
         
             <label for="ls">Last name</label><br>
-            <input type="text" name="last_name" id="ls" value="<?php echo $bk['last_name']?>">
+            <input type="text" name="last_name" id="ls" value="<?php echo htmlspecialchars($lname); ?>">
         
             <label for="cn">Country</label><br>
-            <input type="text" name="country" id="cn" value="<?php echo$bk['country']?>">
+            <input type="text" name="country" id="cn" value="<?php echo htmlspecialchars($country); ?>">
      
             <label for="b">Bio</label><br>
-            <input type="text" name="bio" id="b" value="<?php echo$bk['bio']?>">
+            <input type="text" name="bio" id="b" value="<?php echo htmlspecialchars($bio); ?>">
        
-        <button type="submit">Save</button>
-    </form>
-
+            <button type="submit">Save</button>
+        </form>
 
         <a href="authors.php" class="back-btn">Back to Authors</a>
     </div>
 </div>
-
-      

@@ -18,7 +18,7 @@
             display:inline-block;
             width: 180px;
             height: 100vh;
-            margin-top:66px;
+            margin-top:56px;
             background-color: 391B25;
             position: fixed;
             left: 0;
@@ -65,6 +65,7 @@
 
     <nav>
         <ul>
+            <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="books.php"> Books</a></li>
             <li><a href="authors.php"> Authors</a></li>
             <li><a href="publishers.php"> Publishers</a></li>

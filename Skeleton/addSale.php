@@ -17,7 +17,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $r = mysqli_query($conn, $sql);
 
     if(mysqli_num_rows($r) == 0){
-        die("❌ Error: Borrower does not exist.");
+        die("Error: Borrower does not exist.");
     }
 
     $row = mysqli_fetch_assoc($r);
@@ -28,7 +28,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $r = mysqli_query($conn, $sql);
 
     if(mysqli_num_rows($r) == 0){
-        die("❌ Error: Book title not found.");
+        die(" Error: Book title not found.");
     }
 
     $row = mysqli_fetch_assoc($r);
@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
             VALUES ($bId, $bookId, '$ld', '$sp')";
 
     if(!mysqli_query($conn, $sql)){
-        die("❌ Insert Failed: " . mysqli_error($conn));
+        die(" Insert Failed: " . mysqli_error($conn));
     }
 
     header("Location: sales.php");

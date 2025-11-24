@@ -1,76 +1,99 @@
+.add-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+    color: #333;
+}
 
-    body {
-        background-color: #FEF7E4;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-    }
+.add-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #391B25;
+}
 
-    .content {
-        margin-left: 350px;
-        padding: 20px;
-        width: calc(100% - 250px);
-    }
+.add-container label {
+    font-weight: 600;
+    margin-top: 15px;
+    display: block;
+    color: #391B25;
+}
 
-    .add-container {
-        width: 450px;
-        margin: 70px ;
-        background: rgba(255, 255, 255, 0.6);
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-    }
+/* inputs and selects */
+.add-container input[type="text"],
+.add-container input[type="number"],
+.add-container select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
 
-    .content h2 {
-        text-align: center;
-        color: #391B25;
-        margin-bottom: 20px;
-        
-    }
+.add-container select[multiple] {
+    height: 120px;
+}
 
-    label {
-        font-weight: bold;
-        color: #391B25;
-    }
+/* checkbox styling with label inline */
+.add-container label.checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #391B25;
+}
 
-    input {
-        width: 100%;
-        padding: 10px;
-        margin: 8px 0 15px 0;
-        border: 1px solid #999;
-        border-radius: 6px;
-        font-size: 15px;
-    }
+.add-container label.checkbox-label input[type="checkbox"] {
+    margin-right: 10px;
+    width: auto;
+    margin-top: 0;
+}
 
-    button {
-        width: 100%;
-        background-color: #2d7d2d;
-        color: white;
-        padding: 12px;
-        border: none;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-        font-weight: bold;
-    }
+/* button */
+.add-container button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    background-color: #391B25;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    button:hover {
-        background-color: #1e571e;
-    }
+.add-container button:hover {
+    background-color: #5e2e5e;
+}
 
-    .back-btn {
-        margin-top: 10px;
-        display: block;
-        text-align: center;
-        background-color: #b32121;
-        padding: 10px;
-        color: white;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-    }
+/* back button */
+.back-btn {
+    display: inline-block;
+    margin-top: 15px;
+    background-color: #b32121;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
 
-    .back-btn:hover {
-        background-color: #7a1616;
-    }
+.back-btn:hover {
+    background-color: #7a1616;
+}
+
+/* error box */
+.error-box {
+    background: #ffdddd;
+    padding: 10px;
+    border-left: 4px solid red;
+    margin-bottom: 15px;
+}

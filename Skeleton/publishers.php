@@ -17,7 +17,7 @@ require 'db.php';
 <body>
 
 <div class="content">
-    <h2>Publishers</h2>
+    <h3 style="margin: auto;">Publishers</h3>
 
     <?php
     
@@ -113,11 +113,13 @@ require 'db.php';
                 <td><?php echo $row['city']; ?></td>
                 <td><?php echo $row['country']; ?></td>
                 <td><?php echo $row['contact_info']; ?></td>
+                <?php if ($_SESSION['role'] == 'admin'): ?>
                 <td>
                     <a href="edit_publisher.php?id=<?php echo $row['publisher_id']; ?>"><button class="btn btn-edit">Edit</button></a> |
                     <a onclick="return confirm('Are you sure?');"
                        href="delete_publisher.php?id=<?php echo $row['publisher_id']; ?>"><button class="btn btn-delete">Delet</button></a>
                 </td>
+                <?php endif ?>
             </tr>
         <?php } ?>
     </table>

@@ -1,56 +1,82 @@
-<?php
+<?php 
 include 'header.php';
 require 'db.php';
 
+$errors = [];   // Array to store errors
+$first = $last = $contact = $type = "";  // To keep form values after error
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $t = $_POST['first_name'];
-      $c = $_POST['last_name'];
-     
-      $p = $_POST['contact_info'];
 
-      $ty=0;
-      if($_POST['type']=='Citizen')
-        $ty=3;
-      if($_POST['type']=='School Student')
-        $ty=1;
-      if($_POST['type']=='University Student')
-        $ty=2;
+    // Read input safely
+    $first = trim(mysqli_real_escape_string($conn, $_POST['first_name']));
+    $last  = trim(mysqli_real_escape_string($conn, $_POST['last_name']));
+    $contact = trim(mysqli_real_escape_string($conn, $_POST['contact_info']));
+    $type = $_POST['type'];
 
+    // Validation
+    if (empty($first)) $errors[] = "First Name is required.";
+    if (empty($last)) $errors[] = "Last Name is required.";
+    if (empty($contact)) $errors[] = "Contact Information is required.";
+    if (empty($type)) $errors[] = "Borrower Type is required.";
 
-      $sql = "INSERT INTO borrower (first_name,last_name,type_id,contact_info)
-       VALUES('$t','$c','$ty','$p')";
+    // Convert type to type_id
+    $type_id = 0;
+    if ($type == 'Citizen') $type_id = 3;
+    if ($type == 'School Student') $type_id = 1;
+    if ($type == 'University Student') $type_id = 2;
 
-      $m = mysqli_query($conn, $sql);
-      header("Location: borrowers.php");
+    // If no errors → insert
+    if (empty($errors)) {
+        $sql = "INSERT INTO borrower (first_name, last_name, type_id, contact_info)
+                VALUES ('$first', '$last', '$type_id', '$contact')";
+
+        mysqli_query($conn, $sql);
+        header("Location: borrowers.php");
+        exit;
+    }
 }
 ?>
-<link rel="stylesheet" href="addStyle.css">
 
+<link rel="stylesheet" href="addStyle.css">
 
 <div class="content">
     <div class="add-container">
         <h2>Add Borrower</h2>
-<form method="post">
-            <label for="t">First Name</label>
-            <input name="first_name" id="t">
 
-            <label for="c">last_name</label>
-            <input name="last_name" id="c">
+        <!-- Error Box -->
+        <?php if (!empty($errors)): ?>
+            <div style="background:#ffe5e5;padding:10px;border-left:4px solid #c00;margin-bottom:20px;">
+                <strong>Please fix the following errors:</strong>
+                <ul>
+                    <?php foreach ($errors as $e): ?>
+                        <li><?php echo $e; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
-            <label style="margin-left: 200px">Type</label><br>
-            <select name="type" style="margin:auto;display:block;width:100%;height:30px;margin-bottom:20px;text-align:center">
-                <option value="Citizen">Citizen</option>
-                <option value="School Student">School Student</option>
-                <option value="University Student">University Student</option>
+        <form method="post">
+
+            <label>First Name</label>
+            <input type="text" name="first_name" value="<?php echo $first; ?>">
+
+            <label>Last Name</label>
+            <input type="text" name="last_name" value="<?php echo $last; ?>">
+
+            <label>Type</label>
+            <select name="type" style="width:100%;height:35px;margin-bottom:15px;">
+                <option value="">-- Select --</option>
+                <option <?php if($type=='Citizen') echo 'selected'; ?>>Citizen</option>
+                <option <?php if($type=='School Student') echo 'selected'; ?>>School Student</option>
+                <option <?php if($type=='University Student') echo 'selected'; ?>>University Student</option>
             </select>
-        
 
-            <label for="p">Contact_info</label>
-            <input name="contact_info" id="p">
+            <label>Contact Info</label>
+            <input type="text" name="contact_info" value="<?php echo $contact; ?>">
 
             <button type="submit">Save</button>
         </form>
 
-        <a href="borrowers.php" class="back-btn">Back to Borrower</a>
+        <a href="borrowers.php" class="back-btn">Back to Borrowers</a>
     </div>
-</div>>
+</div>

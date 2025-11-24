@@ -2,35 +2,58 @@
 include 'header.php';
 require 'db.php';
 
-$id = $_GET['id'];
+$errors = [];
 
-// Get publisher by ID
-$sql = "SELECT * FROM publisher WHERE publisher_id = $id";
-$result = mysqli_query($conn, $sql);
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+if ($id <= 0) {
+    die("<h2 style='color:red;margin:50px;'>Invalid Publisher ID.</h2>");
+}
+
+// Fetch publisher
+$sql = "SELECT * FROM publisher WHERE publisher_id = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 $bk = mysqli_fetch_assoc($result);
 
-// Update process
+if (!$bk) {
+    die("<h2 style='color:red;margin:50px;'>Publisher not found.</h2>");
+}
+
+// Initial values
+$name = $bk['name'];
+$city = $bk['city'];
+$country = $bk['country'];
+$contact = $bk['contact_info'];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $t = $_POST['name'];
-    $c = $_POST['city'];
-    $ty = $_POST['country'];
-    $p = $_POST['contact_info'];
+    $name = trim($_POST['name']);
+    $city = trim($_POST['city']);
+    $country = trim($_POST['country']);
+    $contact = trim($_POST['contact_info']);
 
-    $sql = "
-        UPDATE publisher 
-        SET 
-            name = '$t',
-            city = '$c',
-            country = '$ty',
-            contact_info = '$p'
-        WHERE publisher_id = $id
-    ";
+    // Validation
+    if (empty($name)) $errors[] = "Name is required.";
+    if (empty($city)) $errors[] = "City is required.";
+    if (empty($country)) $errors[] = "Country is required.";
+    if (empty($contact)) $errors[] = "Contact info is required.";
 
-    mysqli_query($conn, $sql);
+    if (empty($errors)) {
 
-    header("Location: publishers.php");
-    exit;
+        $sql = "UPDATE publisher 
+                SET name=?, city=?, country=?, contact_info=?
+                WHERE publisher_id=?";
+
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssi", $name, $city, $country, $contact, $id);
+        mysqli_stmt_execute($stmt);
+
+        header("Location: publishers.php");
+        exit;
+    }
 }
 ?>
 
@@ -51,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     .edit-container {
         width: 450px;
-        margin:70px ;
+        margin: 70px;
         background: rgba(255, 255, 255, 0.6);
         padding: 25px;
         border-radius: 12px;
@@ -112,20 +135,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="content">
     <div class="edit-container">
-        <h3>Edit publisher</h3>
+        <h3>Edit Publisher</h3>
+
+        <?php if (!empty($errors)): ?>
+            <div style="
+                background:#ffe6e6;
+                padding:12px;
+                margin-bottom:15px;
+                border-left:4px solid #b30000;">
+                <strong>Please fix the following:</strong>
+                <ul>
+                    <?php foreach ($errors as $e): ?>
+                        <li><?php echo $e; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
         <form method="post">
+
             <label>Name</label>
-            <input name="name" value="<?php echo $bk['name']; ?>">
+            <input name="name" value="<?php echo htmlspecialchars($name); ?>">
 
             <label>City</label>
-            <input name="city" value="<?php echo $bk['city']; ?>">
+            <input name="city" value="<?php echo htmlspecialchars($city); ?>">
 
             <label>Country</label>
-            <input name="country" value="<?php echo $bk['country']; ?>">
+            <input name="country" value="<?php echo htmlspecialchars($country); ?>">
 
-            <label>Contact_info</label>
-            <input name="contact_info" value="<?php echo $bk['contact_info']; ?>">
+            <label>Contact Info</label>
+            <input name="contact_info" value="<?php echo htmlspecialchars($contact); ?>">
 
             <button type="submit">Save</button>
         </form>

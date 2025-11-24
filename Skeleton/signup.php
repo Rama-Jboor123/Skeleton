@@ -2,23 +2,67 @@
 session_start();
 require 'db.php';
 
+$errors = [];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $u = $_POST['username'];
-    $e = $_POST['email'];
+    $u = trim($_POST['username']);
+    $e = trim($_POST['email']);
     $p = $_POST['password'];
     $r = $_POST['role'];
 
-    $hashed = password_hash($p, PASSWORD_DEFAULT);
+    // Validate inputs
+    if (strlen($u) < 3) {
+        $errors[] = "Username must be at least 3 characters.";
+    }
 
+    if (!filter_var($e, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email address.";
+    }
 
-    $sql = "INSERT INTO users(username,email,password,role) VALUES('$u','$e','$hashed','$r')";
+    if (strlen($p) < 6) {
+        $errors[] = "Password must be at least 6 characters.";
+    }
 
-    mysqli_query($conn, $sql);
-     header("Location: login.php");
-            exit;
+    $allowed_roles = ['admin', 'staff', 'student'];
+    if (!in_array($r, $allowed_roles)) {
+        $errors[] = "Invalid role selected.";
+    }
 
+    // Check if username or email already exists
+    $check_sql = "SELECT * FROM users WHERE username = ? OR email = ?";
+    $stmt = mysqli_prepare($conn, $check_sql);
+    mysqli_stmt_bind_param($stmt, "ss", $u, $e);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (mysqli_num_rows($result) > 0) {
+        $errors[] = "Username or Email already exists.";
+    }
+
+    if (empty($errors)) {
+        $hashed = password_hash($p, PASSWORD_DEFAULT);
+
+        $insert_sql = "INSERT INTO users(username,email,password,role) VALUES(?,?,?,?)";
+        $stmt2 = mysqli_prepare($conn, $insert_sql);
+        mysqli_stmt_bind_param($stmt2, "ssss", $u, $e, $hashed, $r);
+        mysqli_stmt_execute($stmt2);
+
+        header("Location: login.php");
+        exit;
+    }
 }
 ?>
+<?php if (!empty($errors)): ?>
+    <div style="background:#ffdddd; padding:10px; border-left:4px solid red; margin-bottom:15px;">
+        <strong>Please fix the following errors:</strong>
+        <ul>
+            <?php foreach ($errors as $err): ?>
+                <li><?php echo htmlspecialchars($err); ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
 <html>
 <head>
 <style>
@@ -44,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 15px;
             padding: 40px;
             width: 350px;
-            color: white;
+            color: black;
             text-align: center;
         }
 
@@ -136,6 +180,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 function showmassege(){
     alert("Your succefully signed up, Now go and log in");
 };
+document.querySelector('form').addEventListener('submit', function(e) {
+    const username = this.username.value.trim();
+    const email = this.email.value.trim();
+    const password = this.password.value;
+    const role = this.role.value;
+
+    let errors = [];
+
+    if (username.length < 3) {
+        errors.push("Username must be at least 3 characters.");
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        errors.push("Invalid email address.");
+    }
+
+    if (password.length < 6) {
+        errors.push("Password must be at least 6 characters.");
+    }
+
+    const allowedRoles = ['admin', 'staff', 'student'];
+    if (!allowedRoles.includes(role)) {
+        errors.push("Invalid role selected.");
+    }
+
+    if (errors.length > 0) {
+        e.preventDefault();
+        alert("Please fix these errors:\n- " + errors.join("\n- "));
+    }
+});
+
 </script>
 </body>
 </html>
